@@ -50,7 +50,7 @@ const AuthPrompt = () => {
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden space-y-4 p-2"
+        className="max-w-md mx-auto mt-5 bg-white rounded-xl shadow-md overflow-hidden space-y-4 p-3"
       >
         <div className="flex items-center space-x-2 text-primary-600">
           <FaRegHandPeace className="w-6 h-6 flex-shrink-0" />
@@ -184,16 +184,16 @@ const ProfileContent = () => {
   return (
     <>
       <div className="flex flex-row justify-content-evenly items-center">
-        <div className="flex w-96 bg-blue-950 m-2 p-1 justify-center rounded-full"></div>
-        <div className="flex w-96 bg-blue-950 m-2 p-1 justify-center rounded-full"></div>
+        <div className="flex w-90 bg-blue-950 m-2 p-1 justify-center rounded-full"></div>
+        <div className="flex w-90 bg-blue-950 m-2 p-1 justify-center rounded-full"></div>
       </div>
 
       <div className="flex flex-row justify-content-evenly items-center flex-wrap">
         <Button
           onClick={() => setOpenDialog(true)}
-          className="flex w-96 min-h-30 h-fit bg-white m-2 p-1 justify-center rounded text-decoration-none text-black hover:shadow-md transition-shadow"
+          className="flex w-90 min-h-30 h-fit bg-white m-2 p-1 justify-center rounded text-decoration-none text-black hover:shadow-md transition-shadow"
         >
-          <div className="flex flex-row w-90 row-auto">
+          <div className="flex flex-row w-80 row-auto">
             <div className="row-1 mt-auto mb-auto pt-3">
               <LiaUserAstronautSolid className="fs-1 text-blue-600" />
             </div>
@@ -208,9 +208,9 @@ const ProfileContent = () => {
 
         <a
           href="/knowledge/home"
-          className="flex w-96 min-h-30 h-fit bg-white m-2 p-1 justify-center rounded text-decoration-none text-black hover:shadow-md transition-shadow"
+          className="flex w-90 min-h-30 h-fit bg-white m-2 p-1 justify-center rounded text-decoration-none text-black hover:shadow-md transition-shadow"
         >
-          <div className="flex flex-row w-90 row-auto">
+          <div className="flex flex-row w-80 row-auto">
             <div className="row-1 mt-auto mb-auto pt-3">
               <GiOpenBook className="fs-1 text-blue-600" />
             </div>

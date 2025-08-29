@@ -38,7 +38,7 @@ export const Logout = () => {
   return (
     <button
       onClick={handleLogout}
-      className="max-w-45 flex items-center gap-1 bg-red-500 px-4 py-2 text-white hover:bg-red-600 rounded-lg transition-colors"
+      className="max-w-45 flex items-center gap-1 bg-red-500 px-4 py-2 text-white hover:bg-red-600 rounded transition-colors"
     >
       <FaSignOutAlt className="mr-1" />
       Cerrar sesión
