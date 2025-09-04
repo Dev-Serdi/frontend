@@ -24,6 +24,7 @@ const MicrosoftSignUp = () => {
         "REASIGNACION_DEPARTAMENTO_TICKET",
         "TICKET_NO_AUTORIZADO",
         "PERFIL_MODIFICADO",
+        "FECHA_COMPROMISO_ASIGNADA",
       ]);
     setIsLoading(true);
     setError("");

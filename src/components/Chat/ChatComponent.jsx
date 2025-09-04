@@ -140,14 +140,16 @@ const ChatComponent = ({
     const trimmedMessage = message.trim();
     if (!trimmedMessage && !selectedFile) return;
 
+    // Limpiar el textarea inmediatamente al enviar
+    setMessage("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
+
     try {
       await onSendMessage(trimmedMessage, selectedFile ? [selectedFile] : []);
-      setMessage("");
       setSelectedFile(null);
       setFileError("");
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "auto";
-      }
     } catch (error) {
       console.error("Error handled in parent:", error);
     }
@@ -416,7 +418,13 @@ const ChatComponent = ({
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                if (!isSendButtonDisabled) handleSubmit(e);
+                if (!isSendButtonDisabled) {
+                  setMessage(""); // Limpiar el textarea inmediatamente
+                  if (textareaRef.current) {
+                    textareaRef.current.style.height = "auto";
+                  }
+                  handleSubmit(e);
+                }
               }
             }}
             style={{ minHeight: "40px", height: "40px" }}
