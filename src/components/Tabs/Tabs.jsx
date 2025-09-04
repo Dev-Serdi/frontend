@@ -28,6 +28,9 @@ export default function Tabs({
   setPagina,
   onUnansweredFilterChange,
   isUnansweredFilterActive,
+  size,
+  setSize,
+  PAGE_SIZES,
 }) {
   return (
     <>
@@ -135,6 +138,21 @@ export default function Tabs({
                 </button>
               </div>
             )}
+          </div>
+          <div className="flex items-center">
+            <label htmlFor="page-size" className="text-sm text-gray-700 mr-1">
+              Tickets por página:
+            </label>
+            <select
+              id="page-size"
+              value={size}
+              onChange={e => setSize(Number(e.target.value))}
+              className="border bg-white rounded px-2 py-1 text-sm"
+            >
+              {PAGE_SIZES.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
           </div>
         </TabList>
         <TabPanels className="w-full mt-2">{children}</TabPanels>

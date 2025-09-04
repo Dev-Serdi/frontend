@@ -25,7 +25,7 @@ export const markNotificationAsSeen = (notificationId) => {
   if (!notificationId) {
     return Promise.reject(new Error("No notificationId provided to mark as seen."));
   }
-  return axios.put(`${REST_API_BASE_URL}/notifications/seen/${notificationId}`, {}, getHeaders());
+  return axios.put(`${REST_API_BASE_URL}/notifications/seen/${notificationId}`, null, getHeaders());
 }
 
 export const fetchAllNotifications = (userId, page, size=10) => {
@@ -35,3 +35,7 @@ export const fetchAllNotifications = (userId, page, size=10) => {
   const params = new URLSearchParams({page: page, size: size});
   return axios.get(`${REST_API_BASE_URL}/notifications/all/${userId}?${params.toString()}`, getHeaders())
 }
+
+export const deleteAllNotificationsForUser = (userId) =>
+  axios.put(`${REST_API_BASE_URL}/notifications/setall/${userId}`,null, getHeaders());
+

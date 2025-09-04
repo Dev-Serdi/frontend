@@ -21,6 +21,7 @@ import {
 } from "../../services/TicketService";
 import { listAllDepartamentos } from "../../services/DepartamentoService";
 import { getUserId } from "../../services/UsuarioService";
+import { SiZebpay } from "react-icons/si";
 
 /**
  * @constant TABS
@@ -41,6 +42,7 @@ const useQuery = () => {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 };
+const PAGE_SIZES = [8, 12, 16, 20]; // Opciones de paginación
 
 /**
  * @component Tasks
@@ -58,6 +60,8 @@ const Tasks = ({ userTicketsOnly = false }) => {
   const query = useQuery();
 
   // Estados del componente
+  const [size, setSize] = useState(PAGE_SIZES[0]); // Estado para el tamaño de página
+
   const [searchTerm, setSearchTerm] = useState("");
   const [pagina, setPagina] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -107,7 +111,8 @@ const Tasks = ({ userTicketsOnly = false }) => {
       filterStatus = "",
       filterDepartamento = "",
       search = "",
-      unanswered = false
+      unanswered = false,
+      pageSize = size // Usar el estado size
     ) => {
       setLoading(true);
       setErrorConexion(false);
@@ -120,38 +125,36 @@ const Tasks = ({ userTicketsOnly = false }) => {
         const currentUserId = user.data;
         setUserId(currentUserId);
 
-        // --- Condición para el nuevo filtro ---
         if (unanswered && !userTicketsOnly) {
           response = await listUnansweredTickets(
             page,
             filterDepartamento,
             filterStatus,
+            undefined,
+            pageSize
           );
         } else if (search) {
           response = await searchTickets(search);
         } else if (userTicketsOnly && currentUserId) {
-          response = await listTicketsByUser(
-            currentUserId,
-            page,
-            0,
-            1
-          );
+          response = await listTicketsByUser(currentUserId, page, pageSize, 1);
           if (unanswered) {
             response = await listUnansweredTickets(
-            page,
-            filterDepartamento,
-            filterStatus,
-            currentUserId
-          );
+              page,
+              filterDepartamento,
+              filterStatus,
+              currentUserId,
+              pageSize
+            );
           }
         } else if (filterStatus) {
           response = await listFilteredTickets(
             page,
             filterStatus,
-            filterDepartamento
+            filterDepartamento,
+            pageSize
           );
         } else {
-          response = await listTickets(page, filterDepartamento);
+          response = await listTickets(page, pageSize, filterDepartamento);
         }
 
         setTickets(response.data.content);
@@ -163,17 +166,17 @@ const Tasks = ({ userTicketsOnly = false }) => {
         setLoading(false);
       }
     },
-    [userTicketsOnly]
+    [userTicketsOnly, size]
   );
 
-  // --- `useEffect` ahora reacciona al nuevo filtro ---
   useEffect(() => {
     fetchTickets(
       pagina,
       status,
       selectedDepartamento,
       searchTerm,
-      unansweredFilter
+      unansweredFilter,
+      size
     );
   }, [
     pagina,
@@ -182,6 +185,7 @@ const Tasks = ({ userTicketsOnly = false }) => {
     searchTerm,
     unansweredFilter,
     fetchTickets,
+    size,
   ]);
 
   useEffect(() => {
@@ -260,6 +264,9 @@ const Tasks = ({ userTicketsOnly = false }) => {
           clearSearch={clearSearch}
           setSearchTerm={setSearchTerm}
           setPagina={setPagina}
+          size={size} // <-- NUEVO
+          setSize={setSize} // <-- NUEVO
+          PAGE_SIZES={PAGE_SIZES}
           onUnansweredFilterChange={handleUnansweredFilterToggle}
           isUnansweredFilterActive={unansweredFilter}
         >
@@ -298,14 +305,14 @@ const Tasks = ({ userTicketsOnly = false }) => {
           </div>
         )}
       </div>
-        <PaginationBar
-          currentPage={pagina}
-          totalPages={totalPages}
-          onPrev={prevPage}
-          onNext={nextPage}
-          isPrevDisabled={pagina === 0}
-          isNextDisabled={pagina >= totalPages - 1}
-        />
+      <PaginationBar
+        currentPage={pagina}
+        totalPages={totalPages}
+        onPrev={prevPage}
+        onNext={nextPage}
+        isPrevDisabled={pagina === 0}
+        isNextDisabled={pagina >= totalPages - 1}
+      />
       <CreateTicket
         open={openDialog}
         setOpen={setOpenDialog}

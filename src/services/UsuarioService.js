@@ -107,3 +107,17 @@ export const listAllModulos = () =>
 
 export const listAllPermisos = () =>
   axios.get(`${REST_API_BASE_URL}/permisos`, getHeaders());
+
+export const getMisPreferencias = () => {
+  return axios.get(`${REST_API_BASE_URL}/usuarios/preferencias/me`, getHeaders());
+};
+
+/**
+ * Actualiza las preferencias de notificación activas para el usuario actual.
+ * @param {Set<string>} preferenciasActivas - Un conjunto de strings con los nombres de las notificaciones a activar.
+ */
+export const updateMisPreferencias = (preferenciasActivas) => {
+  // Convertimos el Set a un Array para que se pueda enviar como JSON
+  const payload = Array.from(preferenciasActivas);
+  return axios.put(`${REST_API_BASE_URL}/usuarios/preferencias/me`, payload, getHeaders());
+};

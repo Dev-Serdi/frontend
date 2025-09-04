@@ -203,6 +203,9 @@ export const PerfilDetalles = () => {
                             Estado
                           </th>
                           <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                            Respuesta
+                          </th>
+                          <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                             Creado
                           </th>
                           <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
@@ -254,6 +257,13 @@ export const PerfilDetalles = () => {
                                   )}
                                 </span>
                               </td>
+                              <td className="py-3 px-4 text-sm">
+                              <span className="px-2 py-1 rounded-full text-xs font-semibold">
+                                {
+                                  ticket.isAttended === true ? "Si" : "No"
+                                }
+                              </span>
+                            </td>
                               <td className="py-3 px-4 text-sm text-gray-600">
                                 {formatDate(ticket.fechaCreacion)}
                               </td>

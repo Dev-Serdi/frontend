@@ -28,11 +28,11 @@ export const getTicketById = (ticketId) =>
  * @param {string} [departamento=""] - Optional department ID to filter by.
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const listTickets = async (page, departamento = "") => {
+export const listTickets = async (page, size=8, departamento = "") => {
   // Use URLSearchParams for cleaner query string building
   const params = new URLSearchParams({
     page: page,
-    size: 8, // Your desired page size
+    size: size, // Your desired page size
   });
 
   // Append departamento only if it has a value
@@ -70,11 +70,11 @@ export const searchTickets= (busqueda) =>
  * @param {string|number} [departamento=""] - Optional department ID to filter by.
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const listFilteredTickets = async (page, status, departamento = "") => {
+export const listFilteredTickets = async (page, status, departamento = "", size=8) => {
   // Use URLSearchParams
   const params = new URLSearchParams({
     page: page,
-    size: 8,
+    size: size,
     // filtro: status, // Backend expects 'filtro' for status
   });
   if (status) {
@@ -182,7 +182,7 @@ export const getTicketHistory = (ticketId) =>
 export const markTicketNotAuthorized = (ticketId, usuarioId) =>
   axios.put(`${REST_API_BASE_URL}/tickets/notauth/${ticketId}?usuarioId=${usuarioId}`, null, getHeaders());
 
-export const listTicketsByCriteria = (filters, page = 0, size = 10) => {
+export const listTicketsByCriteria = (filters, page = 0, size = 6) => {
   const params = new URLSearchParams({ page, size });
 
   // Agrega solo los filtros que tienen un valor
@@ -200,10 +200,10 @@ export const listUbicaciones = () =>
   axios.get(`${REST_API_BASE_URL}/ubicaciones`, getHeaders());
 // Agregado en: src/services/TicketService.js
 
-export const listUnansweredTickets = (page, departamento = "",estadoNombre="",usuarioId="") => {
+export const listUnansweredTickets = (page, departamento = "",estadoNombre="",usuarioId="", size=8) => {
   const params = new URLSearchParams({
     page: page,
-    size: 8, // Manteniendo el tamaño de página consistente
+    size: size, // Manteniendo el tamaño de página consistente
   });
   if (departamento) {
     params.append("departamento", departamento);

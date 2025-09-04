@@ -116,7 +116,13 @@ export const TicketTableGeneric = (deptId) => {
                           Tema
                         </th>
                         <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                          Asignado a
+                        </th>
+                        <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                           Estado
+                        </th>
+                        <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
+                          Respuesta
                         </th>
                         <th className="py-3 px-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">
                           Creado
@@ -153,6 +159,14 @@ export const TicketTableGeneric = (deptId) => {
                                 {ticket.tema}
                               </Link>
                             </td>
+                            <td className="py-3 px-4 text-sm font-mono text-gray-700">
+                              <Link
+                                to={`/perfil/${ticket.usuarioAsignado}`}
+                                className="text-blue-600 hover:underline font-medium"
+                              >
+                                {ticket.usuarioAsignadoNombres}
+                              </Link>
+                            </td>
                             <td className="py-3 px-4 text-sm">
                               <span
                                 className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusLabel(
@@ -164,6 +178,13 @@ export const TicketTableGeneric = (deptId) => {
                                   ticket.estado,
                                   ticket.isAuthorized
                                 )}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-sm">
+                              <span className="px-2 py-1 rounded-full text-xs font-semibold">
+                                {
+                                  ticket.isAttended === true ? "Si" : "No"
+                                }
                               </span>
                             </td>
                             <td className="py-3 px-4 text-sm text-gray-600">

@@ -190,7 +190,7 @@ export const Incidencias = () => {
           {/* Recuadro de búsqueda */}
           <div className="m-2">
             <div className="relative rounded-md shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 p-3 flex items-center pointer-events-none">
                 <FaSearch
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
@@ -200,7 +200,7 @@ export const Incidencias = () => {
                 type="text"
                 name="searchIncidencia"
                 id="searchIncidencia"
-                className="p-4 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                className="p-5 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
                 placeholder="Buscar por nombre o departamento..."
                 value={searchTerm}
                 onChange={handleSearchChange}

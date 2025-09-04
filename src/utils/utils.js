@@ -238,7 +238,7 @@ export const getPriorityColor = (priorityName) => {
   
   // Función para formatear fechas en DD/MM/YYYY
   export const formatFecha = (fechaString) => {
-    if (!fechaString) return "N/A";
+    if (!fechaString) return "NA";
     const fecha = new Date(fechaString);
     // Comprueba si la fecha es válida
     if (isNaN(fecha.getTime())) {
@@ -253,7 +253,7 @@ export const getPriorityColor = (priorityName) => {
   
   // Función para calcular el tiempo restante o vencido desde la fecha de compromiso
   export const getDiasCompromiso = (fechaCompromiso) => {
-    if (!fechaCompromiso) return "N/A";
+    if (!fechaCompromiso) return "NA";
     const fechaCompromisoDate = new Date(fechaCompromiso);
     const ahora = new Date();
   
@@ -300,7 +300,7 @@ export const getPriorityColor = (priorityName) => {
   };
   
   export const getFechaRespuesta = (fechaCreacion, fechaRespuesta) => {
-    if (!fechaRespuesta) return "N/A";
+    if (!fechaRespuesta) return "NA";
     const fechaRespuestaDate = new Date(fechaRespuesta);
     const ahora = new Date(fechaCreacion);
   
@@ -358,7 +358,7 @@ export const getPriorityColor = (priorityName) => {
   };
 
   export const formatDateTime = (dateTimeString, isDueDate = false) => {
-  if (!dateTimeString) return "N/A";
+  if (!dateTimeString) return "NA";
   try {
     const date = new Date(dateTimeString);
     if (isNaN(date.getTime())) return "Fecha inválida";

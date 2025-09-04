@@ -9,8 +9,6 @@ export const ReporteAgentes = () => {
   const [metricas, setMetricas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadInitialData =
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,7 +49,7 @@ export const ReporteAgentes = () => {
 
   // Función para formatear el tiempo
   const formatTiempo = (horas) => {
-    if (horas == null) return "N/A";
+    if (horas == null) return "NA";
     if (horas < 1) return `${Math.round(horas * 60)} min`;
     if (horas < 24) return `${horas.toFixed(1)} h`;
     return `${(horas / 24).toFixed(1)} días`;
@@ -74,7 +72,7 @@ export const ReporteAgentes = () => {
           </h2>
           <button
             onClick={exportToExcel}
-            className="mt-4 sm:mt-0 inline-flex items-center p-4 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+            className="sm:mt-0 inline-flex items-center p-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

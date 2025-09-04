@@ -5,9 +5,8 @@ import { Transition } from "@headlessui/react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../services/authConfig";
 import { callMsGraph } from "../../graph";
-import { signUp, login } from "../../services/UsuarioService";
+import { signUp, login, updateMisPreferencias } from "../../services/UsuarioService";
 import { useAuth } from "../AuthContext";
-
 
 const MicrosoftSignUp = () => {
   const { instance } = useMsal();
@@ -16,6 +15,16 @@ const MicrosoftSignUp = () => {
   const navigate = useNavigate();
 
   const handleSignIn = async () => {
+    const preferencias = new Set([
+        "NUEVO_MENSAJE_EN_TICKET",
+        "NUEVO_TICKET_ASIGNADO",
+        "CAMBIO_ESTADO_TICKET",
+        "TICKET_MODIFICADO",
+        "REASIGNACION_USUARIO_TICKET",
+        "REASIGNACION_DEPARTAMENTO_TICKET",
+        "TICKET_NO_AUTORIZADO",
+        "PERFIL_MODIFICADO",
+      ]);
     setIsLoading(true);
     setError("");
     localStorage.removeItem("authToken");
@@ -23,11 +32,13 @@ const MicrosoftSignUp = () => {
     try {
       // 1. Autenticación con Microsoft
       const response = await instance.loginPopup(loginRequest);
-      if (!response?.accessToken) throw new Error("No se pudo obtener el token de acceso");
+      if (!response?.accessToken)
+        throw new Error("No se pudo obtener el token de acceso");
 
       // 2. Obtener datos del usuario
       const graphResponse = await callMsGraph(response.accessToken);
-      if (!graphResponse?.userPrincipalName) throw new Error("Datos de usuario incompletos");
+      if (!graphResponse?.userPrincipalName)
+        throw new Error("Datos de usuario incompletos");
       // 3. Crear usuario en el backend
       const userData = {
         nombre: graphResponse.givenName || "Usuario",
@@ -44,17 +55,24 @@ const MicrosoftSignUp = () => {
       // 4. Si el registro es exitoso, hacer login
       const loginData = { email: userData.email, password: userData.password };
       const { data: token } = await login(loginData);
-      
+
       authLogin({ token, user: graphResponse }); // Actualiza el contexto global
-      navigate("/dashboard");
-      window.location.reload()
-    } catch (error) {
+      // navigate("/dashboard");
+      // window.location.reload();
+    } 
+    catch (error) {
       setIsLoading(false);
-      const errorMessage = error.response?.data?.error || error.message || "Error desconocido";
+      const errorMessage =
+        error.response?.data?.error || error.message || "Error desconocido";
       setError(errorMessage);
       sessionStorage.removeItem("authToken");
       console.error("Error en el registro:", error);
-    } finally {
+    } 
+    finally {
+      
+      console.log("preferencias", preferencias);
+      
+      await updateMisPreferencias(preferencias);
       setIsLoading(false);
     }
   };
@@ -142,5 +160,3 @@ const MicrosoftSignUp = () => {
 };
 
 export default MicrosoftSignUp;
-
-

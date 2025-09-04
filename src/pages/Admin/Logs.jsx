@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
 import { FaSearch, FaCalendarAlt, FaUser, FaEnvelope } from "react-icons/fa";
 import { listAllIps } from "../../services/IpService";
+import { Link } from "react-router-dom";
 
 export const Logs = () => {
   const [ips, setIps] = useState([]);
@@ -23,10 +24,10 @@ export const Logs = () => {
       setLoading(true);
       // Envia paginación y filtros al servicio
       const response = await listAllIps(
-         currentPage - 1,
-         itemsPerPage,
-         searchTerm,
-         searchType,
+        currentPage - 1,
+        itemsPerPage,
+        searchTerm,
+        searchType
       );
       setIps(response.data.content || []);
       setTotalPages(response.data.totalPages || 1);
@@ -55,31 +56,46 @@ export const Logs = () => {
 
   // Función para formatear fechas de forma amigable y consistente en UTC-7
   const formatDate = (dateString) => {
-    if (!dateString) return '';
-    const timeZone = 'Etc/GMT+7';
+    if (!dateString) return "";
+    const timeZone = "Etc/GMT+7";
     const date = new Date(dateString);
     const now = new Date();
-    const toDateStringInTimeZone = (d) => d.toLocaleDateString('en-CA', { timeZone });
+    const toDateStringInTimeZone = (d) =>
+      d.toLocaleDateString("en-CA", { timeZone });
     const datePart = toDateStringInTimeZone(date);
     const todayPart = toDateStringInTimeZone(now);
     const yesterday = new Date(now);
     yesterday.setDate(now.getDate() - 1);
     const yesterdayPart = toDateStringInTimeZone(yesterday);
-    const dateYear = date.toLocaleDateString('en-US', { timeZone, year: 'numeric' });
-    const todayYear = now.toLocaleDateString('en-US', { timeZone, year: 'numeric' });
+    const dateYear = date.toLocaleDateString("en-US", {
+      timeZone,
+      year: "numeric",
+    });
+    const todayYear = now.toLocaleDateString("en-US", {
+      timeZone,
+      year: "numeric",
+    });
     if (datePart === todayPart) {
-      return `Hoy a las ${date.toLocaleTimeString('es-ES', { timeZone, hour: '2-digit', minute: '2-digit' })}`;
+      return `Hoy a las ${date.toLocaleTimeString("es-ES", {
+        timeZone,
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
     }
     if (datePart === yesterdayPart) {
-      return `Ayer a las ${date.toLocaleTimeString('es-ES', { timeZone, hour: '2-digit', minute: '2-digit' })}`;
+      return `Ayer a las ${date.toLocaleTimeString("es-ES", {
+        timeZone,
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
     }
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString("es-ES", {
       timeZone,
-      day: 'numeric',
-      month: 'short',
-      year: dateYear !== todayYear ? 'numeric' : undefined,
-      hour: '2-digit',
-      minute: '2-digit'
+      day: "numeric",
+      month: "short",
+      year: dateYear !== todayYear ? "numeric" : undefined,
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -212,10 +228,10 @@ export const Logs = () => {
       <div className="bg-white rounded shadow-md overflow-hidden">
         <div className="p-6">
           {/* Recuadro de búsqueda mejorado */}
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <div className="flex flex-col md:flex-row gap-3">
               <div className="relative flex-grow">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 p-3 flex items-center pointer-events-none">
                   <FaSearch
                     className="h-5 w-5 text-gray-400"
                     aria-hidden="true"
@@ -225,8 +241,12 @@ export const Logs = () => {
                   type="text"
                   name="searchIp"
                   id="searchIp"
-                  className="p-4 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
-                  placeholder={searchType === "email" ? "Buscar por correo..." : "Buscar por nombre..."}
+                  className="p-5 focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  placeholder={
+                    searchType === "email"
+                      ? "Buscar por correo..."
+                      : "Buscar por nombre..."
+                  }
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
@@ -256,7 +276,7 @@ export const Logs = () => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           {loading ? (
             <div className="flex justify-center py-10">
               <div className="animate-spin rounded h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
@@ -277,9 +297,14 @@ export const Logs = () => {
                     key={ip.id}
                     className="grid grid-cols-12 gap-4 items-center px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
                   >
-                    <div className="col-span-2 text-gray-700 font-mono">{ip.ip}</div>
+                    <div className="col-span-2 text-gray-700 font-mono">
+                      {ip.ip}
+                    </div>
                     <div className="col-span-3 text-gray-700 font-medium">
-                      {ip.nombreUsuario}
+                      <Link to={`/perfil/${ip.usuarioId}`} className="text-decoration-none">
+                        {ip.nombreUsuario}
+                      
+                      </Link>
                     </div>
                     <div className="col-span-3 text-gray-700">
                       <div className="flex items-center">
@@ -311,16 +336,18 @@ export const Logs = () => {
                       d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  {searchTerm 
-                    ? `No se encontraron registros para "${searchTerm}"` 
+                  {searchTerm
+                    ? `No se encontraron registros para "${searchTerm}"`
                     : "No hay registros de acceso disponibles"}
                 </div>
               )}
               {/* Paginación mejorada */}
               {totalPages > 1 && (
-                <div className="mt-8 flex flex-col sm:flex-row justify-between items-center">
+                <div className="mt-3 flex flex-col sm:flex-row justify-between items-center">
                   <div className="text-sm text-gray-600 mb-4 sm:mb-0">
-                    Mostrando {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, totalItems)} de {totalItems} registros
+                    Mostrando {(currentPage - 1) * itemsPerPage + 1} - {" "}
+                    {Math.min(currentPage * itemsPerPage, totalItems)} de{" "}
+                    {totalItems} registros
                   </div>
                   <div className="inline-flex rounded shadow-sm" role="group">
                     {renderPagination()}

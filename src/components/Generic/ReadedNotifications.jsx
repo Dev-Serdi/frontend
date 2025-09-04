@@ -85,7 +85,7 @@ export const ReadedNotifications = () => {
     }, []);
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div className=" mx-auto p-1 sm:p-6 lg:p-8">
       <Transition
         show={true}
         as={Fragment}
@@ -94,7 +94,7 @@ export const ReadedNotifications = () => {
         enterFrom="opacity-0"
         enterTo="opacity-100"
       >
-        <div className=" bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="container bg-white rounded-2xl shadow-lg overflow-hidden">
           {/* Header */}
           <div className="p-4 sm:p-6 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
@@ -153,15 +153,17 @@ export const ReadedNotifications = () => {
                     enterTo="opacity-100 translate-x-0"
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
-                    <a href={notif.url} onClick={() => handleClick(notif.id)} className="block hover:bg-gray-50 p-2 sm:p-3 text-decoration-none">
+                    <a href={notif.url} onClick={() => handleClick(notif.id)} className="block hover:bg-gray-50 p-1 sm:p- text-decoration-none">
                       <div className="flex items-start">
                         <div className="flex-shrink-0">
                           <FaCheckCircle className={`h-6 w-6 ${notif.readed ? 'text-gray-400' : 'text-green-500'}`} />
                         </div>
                         <div className="m-1 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">{notif.title}</p>
-                          <p className="text-sm text-gray-600">{notif.body}</p>
-                          <p className="text-xs text-gray-400 mt-1">{formatTimeAgo(notif.timestamp)}</p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{notif.title}, 
+                          <span className="text-sm text-gray-600"> {notif.body} - </span>
+                          <span className="text-xs text-gray-400">{formatTimeAgo(notif.timestamp)}</span>
+
+                          </p>
                         </div>
                       </div>
                     </a>
@@ -177,7 +179,7 @@ export const ReadedNotifications = () => {
               <button
                 onClick={() => setPage(p => p - 1)}
                 disabled={page === 0}
-                className="p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
+                className="p-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
               >
                 <FaChevronLeft className="h-5 w-5 text-gray-600" />
               </button>
@@ -187,7 +189,7 @@ export const ReadedNotifications = () => {
               <button
                 onClick={() => setPage(p => p + 1)}
                 disabled={page >= totalPages - 1}
-                className="p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
+                className="p-1 rounded-full disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200"
               >
                 <FaChevronRight className="h-5 w-5 text-gray-600" />
               </button>
