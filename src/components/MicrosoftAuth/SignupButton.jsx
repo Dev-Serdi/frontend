@@ -18,13 +18,13 @@ const MicrosoftSignUp = () => {
     const preferencias = new Set([
         "NUEVO_MENSAJE_EN_TICKET",
         "NUEVO_TICKET_ASIGNADO",
-        "NUEVO_TICKET_CREADO",
         "CAMBIO_ESTADO_TICKET",
         "TICKET_MODIFICADO",
         "REASIGNACION_USUARIO_TICKET",
         "REASIGNACION_DEPARTAMENTO_TICKET",
         "TICKET_NO_AUTORIZADO",
         "PERFIL_MODIFICADO",
+        "NUEVO_TICKET_CREADO",
         "FECHA_COMPROMISO_ASIGNADA",
       ]);
     setIsLoading(true);
@@ -59,23 +59,20 @@ const MicrosoftSignUp = () => {
       const { data: token } = await login(loginData);
 
       authLogin({ token, user: graphResponse }); // Actualiza el contexto global
-      navigate("/dashboard");
-      window.location.reload();
     } 
     catch (error) {
       setIsLoading(false);
       const errorMessage =
-        error.response?.data?.error || error.message || "Error desconocido";
+      error.response?.data?.error || error.message || "Error desconocido";
       setError(errorMessage);
       sessionStorage.removeItem("authToken");
       console.error("Error en el registro:", error);
     } 
     finally {
-      
-      console.log("preferencias", preferencias);
-      
       await updateMisPreferencias(preferencias);
       setIsLoading(false);
+      navigate("/dashboard");
+      window.location.reload();
     }
   };
 
