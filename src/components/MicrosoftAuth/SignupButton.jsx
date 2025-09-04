@@ -58,8 +58,8 @@ const MicrosoftSignUp = () => {
       const { data: token } = await login(loginData);
 
       authLogin({ token, user: graphResponse }); // Actualiza el contexto global
-      // navigate("/dashboard");
-      // window.location.reload();
+      navigate("/dashboard");
+      window.location.reload();
     } 
     catch (error) {
       setIsLoading(false);
