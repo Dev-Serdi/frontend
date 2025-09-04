@@ -18,6 +18,7 @@ const MicrosoftSignUp = () => {
     const preferencias = new Set([
         "NUEVO_MENSAJE_EN_TICKET",
         "NUEVO_TICKET_ASIGNADO",
+        "NUEVO_TICKET_CREADO",
         "CAMBIO_ESTADO_TICKET",
         "TICKET_MODIFICADO",
         "REASIGNACION_USUARIO_TICKET",
