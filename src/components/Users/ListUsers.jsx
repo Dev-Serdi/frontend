@@ -68,17 +68,6 @@ export const ListedUsers = () => {
     }
   };
 
-  const deleteHandler = async (userId) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-      try {
-        await deleteUser(userId);
-        fetchUsuarios(); // Recargar la lista de usuarios
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
-
   const renderPagination = () => {
     let items = [];
 
@@ -159,25 +148,6 @@ export const ListedUsers = () => {
     >
       <div className="flex justify-between items-center p-6 border-b border-gray-100">
         <h2 className="text-xl font-bold text-gray-800">Usuarios</h2>
-        {/* <button
-          disabled
-          className="bg-blue-500 rounded hover:bg-blue-600 text-white font-medium py-2 px-4 transition-colors flex items-center"
-          onClick={() => navigate("/admin/helpdesk/users/add-user")}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 mr-1"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Nuevo Usuario
-        </button> */}
       </div>
       <div className="bg-white rounded shadow-md overflow-hidden mb-1">
         <div className="p-1">
@@ -217,7 +187,6 @@ export const ListedUsers = () => {
                 <div className="col-span-1 text-center">Acciones</div>
               </div>
 
-              {/* La lista de usuarios ahora viene directamente del estado 'usuarios' */}
               {usuarios.length > 0 ? (
                 usuarios.map((usuario) => (
                   <div
@@ -246,9 +215,6 @@ export const ListedUsers = () => {
                     <div className="col-span-2 text-center text-gray-700">
                       {usuario.email}
                     </div>
-                    {/* <div className="col-span-2 text-center text-gray-700">
-                      {usuario.ubicacion}
-                    </div> */}
                     <div className="col-span-1 flex justify-center">
                       <button
                         className="text-blue-500 hover:text-blue-700 m-1 bg-blue-50 hover:bg-blue-100 rounded p-2 transition-colors"
@@ -266,24 +232,7 @@ export const ListedUsers = () => {
                           <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                         </svg>
                       </button>
-                      <button
-                        className="text-red-500 hover:text-red-700 m-1 bg-red-50 hover:bg-red-100 rounded p-2 transition-colors"
-                        onClick={() => deleteHandler(usuario.id)}
-                        title="Eliminar"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
+                      
                     </div>
                   </div>
                 ))

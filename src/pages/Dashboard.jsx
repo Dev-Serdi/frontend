@@ -107,7 +107,7 @@ const ProfileContent = () => {
   const [estadoFiltro, setEstadoFiltro] = useState(0); // Nuevo estado para el filtro
   const [pagination, setPagination] = useState({
     currentPage: 0,
-    itemsPerPage: 6,
+    itemsPerPage: 5,
     totalPages: 0,
     totalItems: 0,
   });
@@ -334,8 +334,11 @@ const ProfileContent = () => {
                             ticket.estado === 1
                               ? "bg-yellow-100 text-yellow-800"
                               : ticket.estado === 2
-                              ? "bg-gray-100 text-gray-800"
-                              : "bg-blue-100 text-blue-800"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-gray-100 text-gray-800"
+                              // : ticket.estado === 3 && ticket?.isAuthorized 
+                              // ? "bg-gray-100 text-gray-800"
+                              // : "bg-red-100 text-red-800"                              
                           }`}
                         >
                           {getStatusLabel(ticket.estado, ticket?.isAuthorized)}
