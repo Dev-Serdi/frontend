@@ -162,7 +162,7 @@ const TaskDetails = () => {
           <h2 className="text-3xl font-bold text-gray-800 mb-3">Error</h2>
           <p className="text-gray-600 text-lg mb-8">{error}</p>
           <button
-            onClick={() => navigate("/helpdesk/tasks")}
+            onClick={() => navigate(-1)}
             className="rounded flex items-center justify-center p-3 w-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-md"
           >
             <FaArrowLeft className="mr-2" />
@@ -178,11 +178,11 @@ const TaskDetails = () => {
       <div className="max-w-screen-2x1 mx-auto">
         <div className="mb-1">
           <button
-            onClick={() => navigate("/helpdesk/tasks")}
+            onClick={() => navigate(-1)}
             className="flex items-center text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
           >
             <FaArrowLeft className="mr-2 h-4 w-4" />
-            Volver a la lista
+            Volver
           </button>
         </div>
 

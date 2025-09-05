@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MicrosoftSignUp from "./components/MicrosoftAuth/SignupButton";
+// import MicrosoftSignUp from "./components/MicrosoftAuth/SignupButton";
 import {
   BrowserRouter,
   Navigate,
@@ -142,7 +142,7 @@ function App() {
 
           {/* Rutas públicas o que manejan su propia lógica de autenticación (como Dashboard) */}
           <Route element={<Layout />}>
-            <Route path="/signup" element={<MicrosoftSignUp />} />
+            {/* <Route path="/signup" element={<MicrosoftSignUp />} /> */}
             <Route path="/help" element={<Help />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/dashboard" element={<Dashboard />} />

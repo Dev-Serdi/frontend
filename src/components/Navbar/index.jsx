@@ -7,6 +7,7 @@ import {
   useMsal,
 } from "@azure/msal-react";
 import NotificationBell from "./NotificationBell";
+import { Link } from "react-router-dom";
 
 const Index = ({ toggleSidebar }) => {
   return (
@@ -48,13 +49,6 @@ const Index = ({ toggleSidebar }) => {
           <ProfileContent />
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
-          {/* <a className="w-45 ms-2" href="/">
-            <img
-              src="https://serdiaceros.com.mx/wp-content/uploads/2022/08/SERDI-logo-web-1.png"
-              alt=""
-              width={"100%"}
-            />
-          </a> */}
           <div className="p-3">Por favor, inicia sesión.</div>
         </UnauthenticatedTemplate>
         <MicrosoftLoginButton />
@@ -68,7 +62,14 @@ const ProfileContent = () => {
   const name = accounts[0]?.name;  
   return (
     <div className="d-flex align-items-center">
-      {name && <div className="p-3">Bienvenido, {name}!</div>}
+      {name && <div className="p-3">Bienvenido,{" "}
+        <Link to="/perfil" className="font-bold text-decoration-none">
+          <span className="text-blue-700">
+            {name}
+          </span>
+        </Link>
+            !
+        </div>}
       <NotificationBell />
     </div>
   );

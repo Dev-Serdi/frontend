@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { Link, Navigate } from "react-router-dom";
 import { UseLoginHandler } from "../components/MicrosoftAuth/ButtonHandler";
+import { MicrosoftSignUp } from "../components/MicrosoftAuth/SignupButton";
 import CreateTicket from "../components/Ticket/modal/CreateTicket";
 import React, { useEffect, useState } from "react";
 import {
@@ -17,11 +18,12 @@ import {
   UnauthenticatedTemplate,
 } from "@azure/msal-react";
 import { useAuth } from "../components/AuthContext";
-import { getUserId } from "../services/UsuarioService";
+import { getUserId, getUserRoles } from "../services/UsuarioService";
 import { listTicketsDashboard } from "../services/TicketService";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { formatDate, getPriorityLabel, getStatusLabel } from "../utils/utils";
 import { GiOpenBook } from "react-icons/gi";
+import { BsFillPassFill } from "react-icons/bs";
 
 const Dashboard = () => {
   return (
@@ -40,7 +42,7 @@ const Dashboard = () => {
 
 const AuthPrompt = () => {
   const { handleLogin } = UseLoginHandler();
-
+  const { handleSignUp } = MicrosoftSignUp();
   return (
     <>
       <Transition
@@ -64,7 +66,7 @@ const AuthPrompt = () => {
 
         <div className="space-y-3">
           <Link
-            to="/signup"
+            onClick={handleSignUp}
             className="mb-4 text-decoration-none flex items-center space-x-3 p-3 rounded-lg bg-gray-50 hover:bg-primary-50 transition-colors group"
           >
             <FaUserPlus className="w-5 h-5 text-primary-600 group-hover:text-primary-700" />
@@ -99,8 +101,9 @@ const AuthPrompt = () => {
 };
 
 const ProfileContent = () => {
-  const { user } = useAuth();
+  const { user } = useAuth();  
   const [userId, setUserId] = useState(null);
+  const [roles, setRoles] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
@@ -117,11 +120,13 @@ const ProfileContent = () => {
         if (user?.username) {
           setLoading(true);
           try {
-            const [userIdRes] = await Promise.all([
+            const [userIdRes, rolRes] = await Promise.all([
               getUserId(user.username),
+              getUserRoles(),
             ]);
             const fetchedUserId = userIdRes.data;
             setUserId(fetchedUserId);
+            setRoles(rolRes.data[0])            
 
             // Ahora obtenemos los tickets con el userId y el filtro de estado
             const ticketsResponse = await listTicketsDashboard(
@@ -189,6 +194,7 @@ const ProfileContent = () => {
       </div>
 
       <div className="flex flex-row justify-content-evenly items-center flex-wrap">
+        {roles === "ROLE_USER" ? (
         <Button
           onClick={() => setOpenDialog(true)}
           className="flex w-90 min-h-30 h-fit bg-white m-2 p-1 justify-center rounded text-decoration-none text-black hover:shadow-md transition-shadow"
@@ -205,6 +211,26 @@ const ProfileContent = () => {
             </div>
           </div>
         </Button>
+
+        ) : (
+          <a
+          href="/helpdesk/mytickets"
+          className="flex w-90 min-h-30 h-fit bg-white m-2 p-1 justify-center rounded text-decoration-none text-black hover:shadow-md transition-shadow"
+        >
+          <div className="flex flex-row w-80 row-auto">
+            <div className="row-1 mt-auto mb-auto pt-3">
+              <BsFillPassFill className="fs-1 text-blue-600" />
+            </div>
+            <div className="row-2 p-1">
+              <h4 className="text-lg font-semibold">Mesa de ayuda</h4>
+              <div className="border-l-blue-900 border-l-3 p-1 text-sm text-center">
+                Accede a la gestión de tickets y consulta tus tickets asignados.
+              </div>
+            </div>
+          </div>
+        </a>
+        )
+      }
 
         <a
           href="/knowledge/home"
