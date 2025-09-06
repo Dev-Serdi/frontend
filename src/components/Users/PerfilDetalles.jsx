@@ -341,7 +341,7 @@ const UserInfoCard = memo(({ usuario, isAdmin }) => (
         />
         <InfoPill
           icon={<FaShieldAlt />}
-          text={formatUserRole(usuario.roles[0])}
+          text={formatUserRole(usuario.rol.nombre)}
           color="blue"
         />
       </div>

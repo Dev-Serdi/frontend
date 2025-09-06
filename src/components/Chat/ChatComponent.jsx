@@ -448,7 +448,7 @@ const ChatComponent = ({
         )}
         {!fileError && !connectionError && (
           <p className="mt-1 text-xs text-gray-500">
-            Shift+Enter para nueva línea. Archivo: PNG, JPG, PDF (Max 5MB).
+            Arraste el archivo al ícono o haga clic para adjuntar. Archivo: PNG, JPG, PDF (Max 5MB).
           </p>
         )}
       </form>

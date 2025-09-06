@@ -20,7 +20,7 @@ import {
   getTicketAtrasado,
 } from "../../utils/utils";
 import CreateTicket from "../../components/Ticket/modal/CreateTicket.jsx";
-import { getPermisos, getUserId, getUserRoles } from "../../services/UsuarioService";
+import { getPermisos, getUserId} from "../../services/UsuarioService";
 import TaskOptionsMenu from "../../components/Ticket/TaskOptionsMenu";
 import { CommitmentDate } from "../../components/Ticket/modal/CommitmentDate.jsx";
 import { ReassingTicket } from "../../components/Ticket/modal/ReassignTicket.jsx";
@@ -57,7 +57,7 @@ const TaskDetails = () => {
 
   const fetchTicketData = useCallback(() => {
     setLoading(true);
-    Promise.all([getPermisos(), getTicketById(id), getUserId(), getUserRoles()])
+    Promise.all([getPermisos(), getTicketById(id), getUserId()])
       .then(([permisosResponse, ticketResponse, userResponse]) => {
         setPermissions(permisosResponse.data || []);
         if (ticketResponse.data) {

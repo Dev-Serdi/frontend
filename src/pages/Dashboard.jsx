@@ -126,7 +126,9 @@ const ProfileContent = () => {
             ]);
             const fetchedUserId = userIdRes.data;
             setUserId(fetchedUserId);
-            setRoles(rolRes.data[0])            
+            setRoles(rolRes.data)            
+            console.log(rolRes.data);
+
 
             // Ahora obtenemos los tickets con el userId y el filtro de estado
             const ticketsResponse = await listTicketsDashboard(

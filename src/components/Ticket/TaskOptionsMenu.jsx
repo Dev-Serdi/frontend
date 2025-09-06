@@ -55,7 +55,7 @@ const TaskOptionsMenu = ({
       label: "Agregar fecha de compromiso",
       icon: <FaCalendarAlt className="m-1 text-gray-500" />,
       action: onAddCommitmentDate,
-      permiso: [], // Sin restricción de permiso
+      permiso: ["AGREGAR_FECHA_COMPROMISO"], // Sin restricción de permiso
       estadosPermitidos:[1]
     },
     {

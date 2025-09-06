@@ -63,7 +63,7 @@ const ProfileContent = () => {
   return (
     <div className="d-flex align-items-center">
       {name && <div className="p-3">Bienvenido,{" "}
-        <Link to="/perfil" className="font-bold text-decoration-none">
+        <Link to="/perfil" className="font- text-decoration-none">
           <span className="text-blue-700">
             {name}
           </span>

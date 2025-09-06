@@ -73,7 +73,7 @@ const UsersComponent = () => {
     nombre: "",
     apellido: "",
     email: "",
-    rol: "",
+    rolId: "",
     departamentoId: "",
     ubicacion: "", 
     moduloId: "",
@@ -107,6 +107,7 @@ const UsersComponent = () => {
         listAllPermisos(),
         listAllUbicaciones(), 
       ]);
+console.log(rolRes);
 
       setOptions({
         departamentos: depRes.data || [],
@@ -130,7 +131,7 @@ const UsersComponent = () => {
             nombre: user.nombre || "",
             apellido: user.apellido || "",
             email: user.email || "",
-            rol: user.roles?.[0] || "",
+            rolId: user.rol.id || "",
             departamentoId: user.departamento?.id || "",
             ubicacion: user.ubicacion || "", 
             moduloId: user.modulo?.id || "",
@@ -170,7 +171,7 @@ const UsersComponent = () => {
     if (!formData.email.trim()) newErrors.email = "El email es obligatorio";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "El formato del email no es válido";
-    if (!formData.rol) newErrors.rol = "El rol es obligatorio";
+    if (!formData.rolId) newErrors.rol = "El rol es obligatorio";
     if (!formData.moduloId) newErrors.moduloId = "El módulo es obligatorio";
 
     setErrors(newErrors);
@@ -188,7 +189,7 @@ const UsersComponent = () => {
       apellido: formData.apellido,
       email: formData.email,
       enabled: formData.enabled,
-      roles: formData.rol ? [formData.rol] : [],
+      rol: formData.rolId ? { id: parseInt(formData.rolId) } : null, // <-- Corrección aquí
       permisos: formData.permisos,
       departamento:
         esModuloGestion || !formData.departamentoId
@@ -197,6 +198,8 @@ const UsersComponent = () => {
       ubicacion: formData.ubicacion,
       modulo: formData.moduloId ? { id: parseInt(formData.moduloId) } : null,
     };
+    console.log(userData);
+    
     try {
       if (id) {
         await updateUser(id, userData);
@@ -272,13 +275,13 @@ const UsersComponent = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormSelect
               label="Rol"
-              name="rol"
-              value={formData.rol}
+              name="rolId"
+              value={formData.rolId}
               onChange={handleChange}
-              error={errors.rol}
+              error={errors.rolId}
               placeholder="Seleccione un rol"
               options={options.roles.map((r) => ({
-                value: r.nombre,
+                value: r.id,
                 label: formatUserRoleWithSystem(r.nombre),
               }))}
             />

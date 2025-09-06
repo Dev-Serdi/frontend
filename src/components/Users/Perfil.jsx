@@ -46,7 +46,7 @@ const Perfil = () => {
       //     .map((p) => p.tipo)
       // );
 
-      const rol = responseUsuario.data.roles[0];    
+      const rol = responseUsuario.data.rol.nombre;
       setUsuario(responseUsuario.data);
       if (rol === "ROLE_ADMIN") {
         setPreferencias({
@@ -112,10 +112,12 @@ const Perfil = () => {
     departamento: {
       nombre: usuario?.departamento?.nombre || "No asignado",
     },
-    roles: usuario?.roles || [],
+    rol: usuario?.rol.nombre || [],
     permisos: usuario?.permisos || [],
     ubicacion: usuario?.ubicacion || "No se encontró ubicación",
   };
+  console.log(userData);
+  
 
   return (
     <div className="max-w-lg mx-auto mb- 2 bg-white rounded-xl shadow-lg overflow-hidden my-8 font-sans">
@@ -154,20 +156,12 @@ const Perfil = () => {
         </InfoSection>
 
         <InfoSection
-          title="Roles"
+          title="Rol"
           icon={<FiShield className="text-green-500" />}
         >
-          {userData.roles.length > 0 ? (
-            userData.roles.map((rol, index) => (
               <Pill
-                key={`rol-${index}`}
-                text={formatUserRole(rol)}
-                color="green"
+                text={userData.rol ? formatUserRole(userData.rol) : "Sin rol asignado"} color="green"
               />
-            ))
-          ) : (
-            <InfoItem value="Sin roles asignados" isPlaceholder />
-          )}
         </InfoSection>
 
         <InfoSection

@@ -32,21 +32,19 @@ export const UseLoginHandler = () => {
       const respuesta = await login(loginData);
       localStorage.setItem("authToken", JSON.stringify(respuesta.data));
       const roles = await getUserRoles();
+      
       // 4. Postear Ip en backend
       const ipResponse = await fetch("https://api.ipify.org/?format=json");
       const data = await ipResponse.json();
       // 5. Manejar éxito
   authLogin({ token: respuesta.data, user: graphResponse }); // Actualiza el contexto global
       const userRoles = roles.data || [];
-
       postIp(data);
       if (
       
         userRoles.includes("ROLE_ADMIN") ||
         userRoles.includes("ROLE_AGENT")
       ) {
-        console.log("userRoles", userRoles);
-        
         navigate("/helpdesk/tasks");
       } else if (userRoles.includes("ROLE_USER")) {
         console.log("userRoles", userRoles);

@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo} from "react";
 import {
-  MdAttachFile,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
@@ -115,7 +114,7 @@ const Card = ({ ticket }) => {
               </span>
             </div>
             <div className="flex gap-1 items-center text-sm text-gray-600 ">
-              <MdAttachFile />
+              <span className="font-bold">#</span>
               <span>{ticket?.codigo}</span>
             </div>
           </div>

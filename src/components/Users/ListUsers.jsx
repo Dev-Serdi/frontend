@@ -36,6 +36,7 @@ export const ListedUsers = () => {
       ]);
       // La página se envía como 0-indexada a la API
       setUsuarios(usersRes.data.content || []);
+      
       setTotalPages(usersRes.data.totalPages || 0);
     } catch (err) {
       setError(
@@ -206,7 +207,7 @@ export const ListedUsers = () => {
                       {usuario.departamento?.nombre}
                     </div>
                     <div className="col-span-2 text-center text-gray-700">
-                      {formatUserRole(usuario.roles[0])}
+                      {formatUserRole(usuario.rol?.nombre)}
                     </div>
                     <div className="col-span-2 text-center text-gray-700">
                       {usuario?.ubicacion ? null : "No especificado"}
