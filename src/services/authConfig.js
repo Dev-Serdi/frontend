@@ -1,7 +1,10 @@
+const CLIENT_ID = import.meta.env.CLIENT_ID;
+const AUTHORITY = import.meta.env.AUTHORITY;
+
 export const msalConfig = {
   auth: {
-    clientId: import.meta.env.CLIENT_ID,
-    authority: import.meta.env.AUTHORITY,
+    clientId: CLIENT_ID,
+    authority: AUTHORITY,
     redirectUri: "https://mds.serdi.com.mx",
   },
   cache: {
