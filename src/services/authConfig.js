@@ -1,5 +1,5 @@
-const CLIENT_ID = import.meta.env.CLIENT_ID;
-const AUTHORITY = import.meta.env.AUTHORITY;
+const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+const AUTHORITY = import.meta.env.VITE_AUTHORITY;
 
 export const msalConfig = {
   auth: {
