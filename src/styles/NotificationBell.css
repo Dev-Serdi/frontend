@@ -1,0 +1,62 @@
+.notification-bell-button {
+  position: relative;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 0.5rem;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.notification-bell-button .icon {
+  font-size: 1.5rem;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(25%, -25%);
+  font-size: 0.65rem;
+}
+
+.notification-dropdown {
+  width: 350px;
+  max-height: 400px;
+  overflow-y: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px; /* Espacio para la flecha */
+  border-radius: 0.5rem; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+  border: none; /* Quitar borde por defecto si lo hay */
+}
+
+.notification-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 8px 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+  filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.1));
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .notification-dropdown {
+    width: 90vw;
+    max-width: 340px;
+  }
+}
+
+.notification-dropdown .dropdown-item {
+  white-space: normal; /* Permite que el texto de la notificación se ajuste */
+}
+
+.bell {
+  padding-left: 4px;
+  width: fit-content;
+}
