@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Documents from "./Documents";
+import Categorias from "./Categorias";
+import Etiquetas from "./Etiquetas";
 import { SubMenu } from "../SubMenu/SubMenu";
 import { useFileManager } from "../Funciones/Funcions";
 import {
   BsFolderFill,
   BsFilePdf,
+  BsImage,
   BsTrash,
   BsStar,
   BsStarFill,
 } from "react-icons/bs";
-import ImagePreview from "../../../../components/Chat/ImagePreview";
-import { FaFileExcel } from "react-icons/fa";
-import { getAuthToken } from "../../../../services/AuthService";
+import { get } from "react-hook-form";
+import { getArchivoUrl } from "../../../../services/MisArchivosService";
 
 const MisArchivos = () => {
   const {
@@ -28,65 +30,6 @@ const MisArchivos = () => {
     goBack,
     getFilteredItems,
   } = useFileManager();
-
-  // Handler para visualizar archivos (ej. PDF) en una nueva pestaña.
-  // Se implementa la lógica de fetch directamente, como en ChatComponent.jsx.
-  const handleViewFile = async (item) => {
-    const url = `${import.meta.env.VITE_API_BASE_URL}/archivos/ver/${item.id}`;
-    const accessToken = getAuthToken();
-
-    if (!accessToken) {
-      alert("No autenticado. Por favor, inicie sesión de nuevo.");
-      return;
-    }
-
-    try {
-      const response = await fetch(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (!response.ok) throw new Error("Error al obtener el archivo del servidor.");
-
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      window.open(blobUrl, "_blank");
-      // Nota: El blob URL se mantiene vivo hasta que la pestaña se cierra.
-    } catch (error) {
-      console.error("Error al visualizar el archivo:", error);
-      alert("No se pudo abrir el archivo.");
-    }
-  };
-
-  // Handler para descargar cualquier tipo de archivo.
-  // Se implementa la lógica de fetch directamente, como en ChatComponent.jsx.
-  const handleDownloadFile = async (item) => {
-    const url = `${import.meta.env.VITE_API_BASE_URL}/archivos/ver/${item.id}`;
-    const accessToken = getAuthToken();
-
-    if (!accessToken) {
-      alert("No autenticado. Por favor, inicie sesión de nuevo.");
-      return;
-    }
-
-    try {
-      const response = await fetch(url, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (!response.ok) throw new Error("Error al obtener el archivo del servidor.");
-
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = item.name;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Error al descargar el archivo:", error);
-      alert("No se pudo descargar el archivo.");
-    }
-  };
 
   return (
     <>
@@ -121,99 +64,117 @@ const MisArchivos = () => {
 
         <div className="uploaded-files-container mt-3">
           {getFilteredItems().length > 0 ? (
-            getFilteredItems().map((item) => {
-              const viewUrl = `${
-                import.meta.env.VITE_API_BASE_URL
-              }/archivos/ver/${item.id}`;
-              return (
-                <div
-                  key={`${item.type}-${item.id}`}
-                  className="uploaded-file mb-3 p-3 border rounded"
-                >
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center">
-                      {item.type === "folder" ? (
-                        <button
-                          className="btn btn-sm me-2 p-0"
-                          onClick={() => enterFolder(item.id)}
-                        >
-                          <BsFolderFill size={24} color="#4e73df" />
-                        </button>
-                      ) : item.fileType === "application/pdf" ? (
-                        <button
-                          className="btn btn-link p-0 me-3"
-                          onClick={() => handleViewFile(item)}
-                        >
-                          <BsFilePdf size={24} color="#e74a3b" />
-                        </button>
-                      ) : item.fileType.startsWith("image") ? (
-                        <div className="me-3" style={{ width: "40px", height: "40px" }}>
-                          <ImagePreview src={viewUrl} alt={item.name} />
-                        </div>
-                      ) : item.fileType === "application/vnd.ms-excel" ||
-                        item.fileType ===
-                          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
-                        <button
-                          className="btn btn-link p-0 me-3"
-                          onClick={() => handleDownloadFile(item)}
-                        >
-                          <FaFileExcel size={24} color="#1d6f42" />
-                        </button>
-                      ) : (
-                        <button
-                          className="btn btn-link p-0"
-                          onClick={() => handleDownloadFile(item)}
-                        >
-                          {item.name}
-                        </button>
-                      )}
-                      <div>
-                        <h5 className="mb-1">{item.name}</h5>
-                        <div className="file-details">
-                          <span>
-                            {item.type === "file" ? item.size : "Carpeta"}
-                          </span>
-                          <span>{item.date}</span>
-                        </div>
+            getFilteredItems().map((item) => (
+              <div
+                key={`${item.type}-${item.id}`}
+                className="uploaded-file mb-3 p-3 border rounded"
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center">
+                    {item.type === "folder" ? (
+                      <button
+                        className="btn btn-sm me-2 p-0"
+                        onClick={() => enterFolder(item.id)}
+                      >
+                        <BsFolderFill size={24} color="#4e73df" />
+                      </button>
+                    ) : item.fileType === "application/pdf" ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <BsFilePdf size={24} color="#e74a3b" className="me-3" />
+                      </a>
+                    ) : item.fileType.startsWith("image") ? (
+                      <img
+                        src={item.url || URL.createObjectURL(item.fileObject)}
+                        alt="Imagen"
+                        className="file-preview-img me-3"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          objectFit: "cover",
+                          borderRadius: "4px",
+                        }}
+                      />
+                    ) : item.fileType === "application/vnd.ms-excel" || item.fileType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <BsFilePdf size={24} color="#1d6f42" className="me-3" />
+                      </a>
+                    ) : (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.name}
+                      </a>
+                    )}
+                    <div>
+                      <h5 className="mb-1">{item.name}</h5>
+                      <div className="file-details">
+                        <span>
+                          {item.type === "file" ? item.size : "Carpeta"}
+                        </span>
+                        <span>{item.date}</span>
                       </div>
                     </div>
-                    <div className="d-flex gap-2 align-items-center">
-                      {item.type === "file" && (
+                  </div>
+
+                  <div className="d-flex gap-2">
+                    {item.type === "file" && (
+                      <button
+                        className="btn btn-sm favorite-btn"
+                        onClick={() => toggleFavorite(item.id)}
+                        title={
+                          favorites.includes(item.id)
+                            ? "Quitar de favoritos"
+                            : "Añadir a favoritos"
+                        }
+                      >
+                        {favorites.includes(item.id) ? (
+                          <BsStarFill color="gold" />
+                        ) : (
+                          <BsStar />
+                        )}
+                      </button>
+                    )}
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleRemoveItem(item)}
+                    >
+                      <BsTrash size={14} />
+                    </button>
+                    {item.type === "file" && (
+                      <>
                         <button
                           className="btn btn-sm favorite-btn"
-                          onClick={() => toggleFavorite(item.id)}
                           title={
                             favorites.includes(item.id)
-                              ? "Quitar de favoritos"
-                              : "Añadir a favoritos"
+                              ? "Marcar a Ivan Sistemas "
+                              : "Marcar a Eduardo Sistemas"
                           }
-                        >
-                          {favorites.includes(item.id) ? (
-                            <BsStarFill color="gold" />
-                          ) : (
-                            <BsStar />
-                          )}
-                        </button>
-                      )}
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleRemoveItem(item.id)}
-                      >
-                        <BsTrash size={14} />
-                      </button>
-                      {item.type === "file" && (
-                        <button
+                        ></button>
+                        <a
+                          href={getArchivoUrl(item.id)}
+                          download
                           className="btn btn-sm btn-outline-primary"
-                          onClick={() => handleDownloadFile(item)}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           Descargar
-                        </button>
-                      )}
-                    </div>
+                        </a>
+                      </>
+                    )}
                   </div>
                 </div>
-              );
-            })
+              </div>
+            ))
           ) : (
             <div className="text-center py-4 text-muted">
               {currentFolder
