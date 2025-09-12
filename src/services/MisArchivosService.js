@@ -23,27 +23,8 @@ const getHeaders = () => {
 };
 
 // === Endpoints ===
-// ✅ Esta función se modifica para obtener el archivo como un Blob, usando la lógica de ChatComponent.
-export const getArchivoUrl = async (id) => {
-  const url = `${REST_API_BASE_URL}/archivos/ver/${id}`;
-  const accessToken = getAuthToken();
-
-  if (!accessToken) {
-    console.error("⛔ No hay token JWT disponible. ¿Iniciaste sesión?");
-    throw new Error("No autenticado");
-  }
-
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Error del servidor al obtener archivo: ${response.status} ${response.statusText}`
-    );
-  }
-  return response.blob();
-};
+// ✅ Esta línea es correcta
+export const getArchivoUrl = (id) => `${REST_API_BASE_URL}/archivos/ver/${id}`;
 
 export const getMisArchivos = () =>
   axios.get(`${REST_API_BASE_URL}/mis-archivos/`, getHeaders());
@@ -116,3 +97,5 @@ export const uploadArchivo = (file, carpetaId, usuarioId, sitioId) => {
 
   return axios.post(`${REST_API_BASE_URL}/archivos/uploads`, formData, { headers });
 };
+
+
