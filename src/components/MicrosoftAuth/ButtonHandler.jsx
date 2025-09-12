@@ -74,6 +74,7 @@ export const UseLogoutHandler = () => {
     try {
       // Logout en backend
       await backendLogout();
+      localStorage.clear();
       // Logout en Azure AD
       await instance.logoutPopup({
         postLogoutRedirectUri: "/",
@@ -82,7 +83,6 @@ export const UseLogoutHandler = () => {
     } catch (error) {
       console.error(error);
     }
-    localStorage.clear();
     navigate("/");
   };
 
