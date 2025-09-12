@@ -120,8 +120,6 @@ const Task = () => {
   const workflows = filteredActivities.filter((a) => a.type === "workflow");
 
   const canCreateActivity = () => {
-    console.log();
-    
     return userRoles.includes('ROLE_ADMIN') || userRoles.includes('ROLE_SUPERVISOR');
   };
 

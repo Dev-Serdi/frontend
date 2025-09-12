@@ -53,7 +53,6 @@ export const UseLoginHandler = () => {
     } catch (error) {
       setIsLoading(false);
       console.error("Error al iniciar sesion: ", error);
-      console.log(error?.response?.data?.mensaje);
       if (error?.response?.data?.mensaje.includes("La cuenta de usuario está deshabilitada.")) {
         sessionStorage.clear();
         alert("Tu cuenta está deshabilitada. Por favor, contacta al administrador.");
@@ -80,11 +79,11 @@ export const UseLogoutHandler = () => {
         postLogoutRedirectUri: "/",
         mainWindowRedirectUri: "/",
       });
-      localStorage.clear();
-      navigate("/");
     } catch (error) {
       console.error(error);
     }
+    localStorage.clear();
+    navigate("/");
   };
 
   return { handleLogout };
