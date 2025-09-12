@@ -9,9 +9,9 @@ import {
   BsStar,
   BsStarFill,
 } from "react-icons/bs";
-import { getArchivoUrl } from "../../../../services/MisArchivosService";
 import ImagePreview from "../../../../components/Chat/ImagePreview";
 import { FaFileExcel } from "react-icons/fa";
+import { getAuthToken } from "../../../../services/AuthService";
 
 const MisArchivos = () => {
   const {
@@ -29,12 +29,26 @@ const MisArchivos = () => {
     getFilteredItems,
   } = useFileManager();
 
-  // Handler para visualizar archivos (ej. PDF) en una nueva pestaña
+  // Handler para visualizar archivos (ej. PDF) en una nueva pestaña.
+  // Se implementa la lógica de fetch directamente, como en ChatComponent.jsx.
   const handleViewFile = async (item) => {
+    const url = `${import.meta.env.VITE_API_BASE_URL}/archivos/ver/${item.id}`;
+    const accessToken = getAuthToken();
+
+    if (!accessToken) {
+      alert("No autenticado. Por favor, inicie sesión de nuevo.");
+      return;
+    }
+
     try {
-      const blob = await getArchivoUrl(item.id);
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, "_blank");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!response.ok) throw new Error("Error al obtener el archivo del servidor.");
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      window.open(blobUrl, "_blank");
       // Nota: El blob URL se mantiene vivo hasta que la pestaña se cierra.
     } catch (error) {
       console.error("Error al visualizar el archivo:", error);
@@ -42,18 +56,32 @@ const MisArchivos = () => {
     }
   };
 
-  // Handler para descargar cualquier tipo de archivo
+  // Handler para descargar cualquier tipo de archivo.
+  // Se implementa la lógica de fetch directamente, como en ChatComponent.jsx.
   const handleDownloadFile = async (item) => {
+    const url = `${import.meta.env.VITE_API_BASE_URL}/archivos/ver/${item.id}`;
+    const accessToken = getAuthToken();
+
+    if (!accessToken) {
+      alert("No autenticado. Por favor, inicie sesión de nuevo.");
+      return;
+    }
+
     try {
-      const blob = await getArchivoUrl(item.id);
-      const url = window.URL.createObjectURL(blob);
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!response.ok) throw new Error("Error al obtener el archivo del servidor.");
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = blobUrl;
       a.download = item.name;
       document.body.appendChild(a);
       a.click();
       a.remove();
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("Error al descargar el archivo:", error);
       alert("No se pudo descargar el archivo.");
@@ -149,50 +177,39 @@ const MisArchivos = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="d-flex gap-2">
-                    {item.type === "file" && (
-                      <button
-                        className="btn btn-sm favorite-btn"
-                        onClick={() => toggleFavorite(item.id)}
-                        title={
-                          favorites.includes(item.id)
-                            ? "Quitar de favoritos"
-                            : "Añadir a favoritos"
-                        }
-                      >
-                        {favorites.includes(item.id) ? (
-                          <BsStarFill color="gold" />
-                        ) : (
-                          <BsStar />
-                        )}
-                      </button>
-                    )}
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleRemoveItem(item)}
-                    >
-                      <BsTrash size={14} />
-                    </button>
-                    {item.type === "file" && (
-                      <>
+                    <div className="d-flex gap-2 align-items-center">
+                      {item.type === "file" && (
                         <button
                           className="btn btn-sm favorite-btn"
+                          onClick={() => toggleFavorite(item.id)}
                           title={
                             favorites.includes(item.id)
-                              ? "Marcar a Ivan Sistemas "
-                              : "Marcar a Eduardo Sistemas"
+                              ? "Quitar de favoritos"
+                              : "Añadir a favoritos"
                           }
-                        ></button>
+                        >
+                          {favorites.includes(item.id) ? (
+                            <BsStarFill color="gold" />
+                          ) : (
+                            <BsStar />
+                          )}
+                        </button>
+                      )}
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleRemoveItem(item.id)}
+                      >
+                        <BsTrash size={14} />
+                      </button>
+                      {item.type === "file" && (
                         <button
                           className="btn btn-sm btn-outline-primary"
                           onClick={() => handleDownloadFile(item)}
                         >
                           Descargar
                         </button>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               );
