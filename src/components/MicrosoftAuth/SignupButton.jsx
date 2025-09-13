@@ -47,8 +47,6 @@ export const MicrosoftSignUp = () => {
         password: graphResponse.id,
         ubicacion: graphResponse.officeLocation || "No especificado",
         enabled: true,
-        roles: ["ROLE_USER"],
-        permisos: [""],
       };
       await signUp(userData);
 
@@ -66,7 +64,6 @@ export const MicrosoftSignUp = () => {
       console.error("Error en el registro:", error);
     } 
     finally {
-      await updateMisPreferencias(preferencias);
       setIsLoading(false);
       navigate("/dashboard");
       window.location.reload();
