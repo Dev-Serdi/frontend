@@ -25,7 +25,6 @@ const  Table = ({tickets, userId}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
   const [roles, setRoles] = useState(null);
-  console.log(userId);
 
   useEffect(() => {
     const fetchRoles = async () => {
