@@ -61,7 +61,6 @@ const Tasks = ({ userTicketsOnly = false }) => {
 
   // Estados del componente
   const [size, setSize] = useState(PAGE_SIZES[0]); // Estado para el tamaño de página
-
   const [searchTerm, setSearchTerm] = useState("");
   const [pagina, setPagina] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -72,6 +71,7 @@ const Tasks = ({ userTicketsOnly = false }) => {
   const [departamentos, setDepartamentos] = useState([]);
   const [selectedDepartamento, setSelectedDepartamento] = useState("");
   const [unansweredFilter, setUnansweredFilter] = useState(false);
+
 
   const [selected, setSelected] = useState(() => {
     const saved = localStorage.getItem("selectedTab");
@@ -156,7 +156,6 @@ const Tasks = ({ userTicketsOnly = false }) => {
         } else {
           response = await listTickets(page, pageSize, filterDepartamento);
         }
-
         setTickets(response.data.content);
         setTotalPages(response.data.totalPages);
       } catch (error) {
@@ -282,7 +281,8 @@ const Tasks = ({ userTicketsOnly = false }) => {
             />
           ) : (
             <div className="pb-2 w-full overflow-x-auto">
-              <Table tickets={tickets} />
+              <Table tickets={tickets} 
+                      userId={userId}/>
             </div>
           )}
         </Tabs>
