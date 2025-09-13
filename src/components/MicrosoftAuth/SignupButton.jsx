@@ -55,7 +55,7 @@ export const MicrosoftSignUp = () => {
       const { data: token } = await login(loginData);
 
       authLogin({ token, user: graphResponse }); // Actualiza el contexto global
-    } 
+    }
     catch (error) {
       setIsLoading(false);
       const errorMessage =

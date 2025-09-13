@@ -12,6 +12,8 @@ import Button from "../Button";
 import ConfirmationDialog from "./modal/ConfirmationDialog";
 import { deleteTicket } from "../../services/TicketService";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { getUserRoles } from "../../services/UsuarioService";
 
 const ICONS = {
   1: <MdKeyboardDoubleArrowUp />,
@@ -19,13 +21,31 @@ const ICONS = {
   3: <MdKeyboardArrowDown />,
 };
 
-const  Table = ({tickets}) => {
+const  Table = ({tickets, userId}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [roles, setRoles] = useState(null);
+  console.log(userId);
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await getUserRoles();
+        setRoles(response.data || []);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+        setRoles([]);
+      }
+    };
+    fetchRoles();
+  }, []);
 
   const deleteClicks = (id) => {
-    setSelected(id);
-    setOpenDialog(true);
+    if (roles === "ROLE_ADMIN") {
+      setSelected(id);
+      setOpenDialog(true);
+    }
+    else alert("No tienes permisos para eliminar tickets");
   };
 
   const deleteHandler = () => {
